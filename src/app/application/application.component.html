@@ -5,8 +5,8 @@
 
   <div class="__sectionAddPlayersToList">
     <div class="__optionNumbers">
-      <select>
-        <option *ngFor="let teamNumbers of optionNumberTeams" [value]="teamNumbers">
+      <select [(ngModel)]="selectedStandardNumberForTeams">
+        <option *ngFor="let teamNumbers of optionsNumberForTeams" [value]="teamNumbers">
           Team: {{teamNumbers}}
         </option>
       </select>
@@ -16,6 +16,9 @@
       <input type="text" [(ngModel)]="playerName" (keyup.enter)="addPlayerToList()" placeholder="Fill the names of the players"/>
       <button (click)="addPlayerToList()">+</button>
     </div>
+
+    <p>{{playersList.length}}</p>
+    <p>{{errorMessage}}</p>
 
     <div class="__playersInList" *ngFor="let player of playersList; let i = index;">
       <p>{{player}}</p>
@@ -27,8 +30,14 @@
     <div>
       <button (click)="generateTeams()">Make teams!</button>
     </div>
-    <div *ngFor="let newlist of shuffledList">
-      <p>{{newlist}}</p>
+    <div *ngIf="generatedTeams.length > 0">
+      <h2>Generated Teams:</h2>
+      <div *ngFor="let team of generatedTeams; let i = index">
+        <h4>Team: {{ i + 1}}</h4>
+        <ul *ngFor="let player of team">
+          <li>{{player}}</li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>

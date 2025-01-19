@@ -8,18 +8,22 @@ import { Component } from '@angular/core';
 export class ApplicationComponent {
   
   playersList: string[] = [];
-  playerName: string = "";
-  optionNumberTeams: number[] = [2,3,4,5,6,7,8,9,10,11,12];
   shuffledList: string[] = [];
+  playerName: string = "";
+  errorMessage: string = "";
+  optionsNumberForTeams: number[] = [2,3,4,5,6,7,8,9,10,11,12];
+  selectedStandardNumberForTeams: number = 2;
+  generatedTeams: string[][] = [];
 
   addPlayerToList() {
     if (this.playerName == "") {
-      alert("Fill in a name")
+      this.errorMessage = "Fill in a name";
     }
     else {
       this.playersList.push(this.playerName);
       this.playerName = "";
       console.log(this.playersList.length);
+      this.errorMessage = "";
     }
   }
 
@@ -27,13 +31,29 @@ export class ApplicationComponent {
     this.playersList.splice(index, 1);
   }
 
-  generateTeams(): string[] {
-    this.shuffledList = [...this.playersList];
-    for (let i = this.shuffledList.length - 1; i > 0; i--) { 
-      const j = Math.floor(Math.random() * (i + 1)); 
-      [this.shuffledList[i], this.shuffledList[j]] = [this.shuffledList[j], this.shuffledList[i]];
+  generateTeams() {
+    if (this.playersList.length < this.selectedStandardNumberForTeams) {
+      this.errorMessage = "Not enough players..."
     }
-    return this.shuffledList;
+    else {
+      this.shuffledList = [...this.playersList];
+
+      //shuffle
+      for (let i = this.shuffledList.length - 1; i > 0; i--) { 
+        const j = Math.floor(Math.random() * (i + 1)); 
+        [this.shuffledList[i], this.shuffledList[j]] = [this.shuffledList[j], this.shuffledList[i]];
+      }
+      
+      // making empty array of arrays (teams) of selectedStandardNumberForTeams
+      const teams: string[][] = Array.from({ length: this.selectedStandardNumberForTeams }, () =>[]);
+      
+      this.shuffledList.forEach((player, index) => {
+        teams[index % this.selectedStandardNumberForTeams].push(player);
+      });
+
+      this.generatedTeams = teams;
+      this.errorMessage = "";
+    }
   }
   
 
