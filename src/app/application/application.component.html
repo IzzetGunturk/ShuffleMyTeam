@@ -1,0 +1,36 @@
+<div class="__container">
+  <div class="__titleContainer">
+    <h1>Shuffle My Team</h1>
+  </div>
+
+  <div class="__sectionAddPlayersToList">
+    <div class="__optionNumbers">
+      <select>
+        <option *ngFor="let teamNumbers of optionNumberTeams" [value]="teamNumbers">
+          Team: {{teamNumbers}}
+        </option>
+      </select>
+    </div>
+
+    <div class="__inputSearch">
+      <input type="text" [(ngModel)]="playerName" (keyup.enter)="addPlayerToList()" placeholder="Fill the names of the players"/>
+      <button (click)="addPlayerToList()">+</button>
+    </div>
+
+    <div class="__playersInList" *ngFor="let player of playersList; let i = index;">
+      <p>{{player}}</p>
+      <button (click)="deletePlayerFromList(i)">X</button>
+    </div>
+  </div>
+
+  <div>
+    <div>
+      <button (click)="generateTeams()">Make teams!</button>
+    </div>
+    <div *ngFor="let newlist of shuffledList">
+      <p>{{newlist}}</p>
+    </div>
+  </div>
+</div>
+
+
